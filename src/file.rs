@@ -506,6 +506,11 @@ impl<'n> NtfsFile<'n> {
         LittleEndian::read_u16(&self.record.data()[start..])
     }
 
+    pub fn logical_sequence_number(&self) -> u64 {
+        let start = offset_of!(FileRecordHeader, record_header);
+        LittleEndian::read_u64(&self.record.data()[start + 0x8..])
+    }
+
     fn validate_signature(record: &Record) -> Result<()> {
         let signature = &record.signature();
         let expected = b"FILE";

@@ -29,6 +29,15 @@ impl<'a> Mft<'a>
             end_rc : total_record_count
         })
     }
+
+    pub fn iter(&self) -> impl Iterator<Item = u64> + '_ {
+        self.start_rc..self.end_rc
+    }
+
+    pub fn iter_mut(&mut self) -> impl Iterator<Item = u64> + '_ {
+        self.start_rc..self.end_rc
+    }
+
 }
 
 impl Iterator for Mft<'_> {

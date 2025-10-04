@@ -60,6 +60,7 @@ mod time;
 mod traits;
 pub mod types;
 mod upcase_table;
+pub mod mft;
 
 pub use crate::attribute::*;
 pub use crate::error::*;
@@ -73,3 +74,5 @@ pub use crate::ntfs::*;
 pub use crate::time::*;
 pub use crate::traits::*;
 pub use crate::upcase_table::*;
+
+mod tests;

@@ -147,6 +147,18 @@ impl Ntfs {
         self.sector_size
     }
 
+    pub(crate) fn mft_entry_count<T>(&self, fs: &mut T) -> Result<u64>
+    where 
+        T: Read + Seek
+    {
+
+        let mft = NtfsFile::new(self, fs, self.mft_position.value().unwrap(), 0)?;
+        let mft_data_attribute =
+            mft.find_resident_attribute(NtfsAttributeType::Data, None, None)?;
+        let mft_size = mft_data_attribute.value_length();
+        Ok(mft_size / self.file_record_size as u64)
+    }
+
     /// Returns the 64-bit serial number of this NTFS volume.
     pub fn serial_number(&self) -> u64 {
         self.serial_number

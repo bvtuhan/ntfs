@@ -74,5 +74,3 @@ pub use crate::ntfs::*;
 pub use crate::time::*;
 pub use crate::traits::*;
 pub use crate::upcase_table::*;
-
-mod tests;

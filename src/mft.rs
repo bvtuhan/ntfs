@@ -18,14 +18,15 @@ pub struct Mft<'a>
 
 impl<'a> Mft<'a>
 {
-    pub fn new<T>(ntfs : &'a Ntfs, fs : &mut T) -> crate::error::Result<Self>
+    pub fn new<T>(ntfs : &'a Ntfs, fs : &mut T, ignore_dos : bool) -> crate::error::Result<Self>
     where
         T : Read + Seek
     {
+        let start_rc = if ignore_dos { 24u64 } else { 0u64 };
         let total_record_count = ntfs.mft_entry_count(fs)?;
         Ok(Self {
             ntfs : ntfs,
-            start_rc : 0, // default
+            start_rc : start_rc, // default
             end_rc : total_record_count
         })
     }

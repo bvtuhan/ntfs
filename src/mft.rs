@@ -22,7 +22,30 @@ impl<'a> Mft<'a>
     where
         T : Read + Seek
     {
-        let start_rc = if ignore_dos { 24u64 } else { 0u64 };
+        /*
+         * https://ntfs.com/ntfs-system-files.htm
+         * But i am not entirely sure that this source is up-to-date
+         * According to data-set i am parsing :
+                Entry 24 Name : $Quota
+                Entry 25 Name : $ObjId
+                Entry 26 Name : $Reparse
+                Entry 27 Name : $RmMetadata
+                Entry 28 Name : $Repair
+                Entry 29 Name : $Deleted
+                Entry 30 Name : $TxfLog
+                Entry 31 Name : $Txf
+                Entry 32 Name : $Tops
+                Entry 33 Name : $TxfLog.blf
+                Entry 34 Name : $TxfLogContainer00000000000000000001
+                Entry 35 Name : $TxfLogContainer00000000000000000002
+                Entry 36 Name : System Volume Information
+                Entry 37 Name : ClientRecoveryPasswordRotation
+                Entry 38 Name : AadRecoveryPasswordDelete
+                Entry 39 Name : FveDecryptedVolumeFolder
+                Entry 40 Name : WPSettings.dat
+         * the first 40 MFT entries are reserved for system files
+         */
+        let start_rc = if ignore_dos { 26u64 } else { 0u64 };
         let total_record_count = ntfs.mft_entry_count(fs)?;
         Ok(Self {
             ntfs : ntfs,
